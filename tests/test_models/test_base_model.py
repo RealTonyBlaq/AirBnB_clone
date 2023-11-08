@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Test cases for BaseModel in base_model.py """
+""" Unittest for BaseModel in base_model.py """
 
 import datetime
 from models.base_model import BaseModel
@@ -8,7 +8,39 @@ import uuid
 
 
 class TestBaseModel(unittest.TestCase):
-    """ Tests for the BaseModel class """
+    """ Testing the BaseModel class """
+
+    def test_args(self):
+        """ Tests when only *args is passed """
+        bm = BaseModel("name")
+        self.assertNotIn("name", bm.__dict__)
+
+    def test_args_attr(self):
+        """ Tests when *args exists and **kwargs exists too """
+        bm = BaseModel()
+        bm.first_name = "Ifeanyi"
+        bm.number = 20
+        a_dict = bm.to_dict()
+        new = BaseModel("last_name", "age", **a_dict)
+        self.assertNotIn("age", new.__dict__)
+
+    def test_kwargs_empty(self):
+        """
+        Tests the **kwargs when an empty dictionary is passed
+        to see if id, created_at, updated_at instances were created
+        """
+        a_dict = {}
+        bm = BaseModel(**a_dict)
+        self.assertIsInstance(bm.id, str)
+
+    def test_kwargs_not_empty(self):
+        """ Tests the **kwargs when it is not empty """
+        bm = BaseModel()
+        bm.name = "Ifeanyi"
+        bm.age = 15
+        a_dict = bm.to_dict()
+        new = BaseModel(**a_dict)
+        self.assertEqual(new.age, 15)
 
     def test_id_type(self):
         """ Tests if the id type is a string """
