@@ -50,7 +50,9 @@ class BaseModel:
         self.updated_at = datetime.datetime.now()
 
     def to_dict(self):
-        """ Returns a dict containing all keys/values """
+        """
+        Returns a dictionary containing all keys/values including
+        the __class__ key with the class name of the object """
         a_dict = {}
         a_dict["__class__"] = __class__.__name__
         for key in self.__dict__:
