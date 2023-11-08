@@ -15,6 +15,12 @@ class TestBaseModel(unittest.TestCase):
         bm = BaseModel("name")
         self.assertNotIn("name", bm.__dict__)
 
+    def test_args_dict(self):
+        """ Tests when a list is passed as *args """
+        my_list = ["age", "name"]
+        bm = BaseModel(*my_list)
+        self.assertNotIn("age", bm.__dict__)
+
     def test_args_attr(self):
         """ Tests when *args exists and **kwargs exists too """
         bm = BaseModel()
