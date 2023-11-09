@@ -15,7 +15,8 @@ class FileStorage():
     Private Class Attributes:
     -------------------------
     file_path (str): path to the JSON file
-    objects (dict): stores all objects
+    objects (dict): empty but wii stores all objects
+    by <class name>.id
     """
     __file_path = "file.json"
     __objects = {}
@@ -32,7 +33,7 @@ class FileStorage():
     def save(self):
         """ Serializes __objects to a json file specified in __file_path """
         with open(FileStorage.__file_path, mode='w', encoding='utf-8') as f:
-            f.write(json.dumps(FileStorage.__objects))
+            f.write(json.dumps(FileStorage.__object))
 
     def reload(self):
         """ Deserializes instances from a json file if path exists """
