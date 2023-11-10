@@ -27,6 +27,9 @@ class BaseModel:
                     is called.
         """
         args = None
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.datetime.now()
+        self.updated_at = datetime.datetime.now()
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
@@ -35,14 +38,8 @@ class BaseModel:
                         setattr(self, key, value)
                     else:
                         setattr(self, key, value)
-            from models import storage
-            storage.new(self)
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
-            # from models import storage
-            # storage.new(self.to_dict())
+            models.storage.new(self)
 
     def __str__(self):
         """ Returns a string representation of BaseModel """
@@ -55,8 +52,7 @@ class BaseModel:
         current datetime
         """
         self.updated_at = datetime.datetime.now()
-        from models import storage
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """
