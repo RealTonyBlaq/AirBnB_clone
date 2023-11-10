@@ -36,8 +36,7 @@ class BaseModel:
                     if key == "updated_at" or key == "created_at":
                         value = datetime.datetime.fromisoformat(value)
                     setattr(self, key, value)
-        else:
-            models.storage.new(self)
+        models.storage.new(self)
 
     def __str__(self):
         """ Returns a string representation of BaseModel """
