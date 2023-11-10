@@ -38,7 +38,7 @@ class FileStorage():
         obj_copy = FileStorage.__objects
         new_dict = {}
         for key in obj_copy.keys():
-            if type(obj_copy[key]) not in [str, int, dict]:
+            if type(obj_copy[key]) is not dict:
                 new_dict[key] = obj_copy[key].to_dict()
             else:
                 new_dict[key] = obj_copy[key]
