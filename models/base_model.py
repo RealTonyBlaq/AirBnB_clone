@@ -35,9 +35,7 @@ class BaseModel:
                 if key != "__class__":
                     if key == "updated_at" or key == "created_at":
                         value = datetime.datetime.fromisoformat(value)
-                        setattr(self, key, value)
-                    else:
-                        setattr(self, key, value)
+                    setattr(self, key, value)
         else:
             models.storage.new(self)
 
