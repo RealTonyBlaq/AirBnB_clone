@@ -38,7 +38,10 @@ class FileStorage():
         obj_copy = FileStorage.__objects
         new_dict = {}
         for key in obj_copy.keys():
-            new_dict[key] = obj_copy[key].to_dict()
+            if type(obj_copy[key]) not in [str, int, dict]:
+                new_dict[key] = obj_copy[key].to_dict()
+            else:
+                new_dict[key] = obj_copy[key]
         with open(FileStorage.__file_path, mode='w', encoding='utf-8') as f:
             f.write(json.dumps(new_dict))
 
