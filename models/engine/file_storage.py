@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ Module for class FileStorage """
 
-from models.base_model import BaseModel
 import json
 import os
 
@@ -27,17 +26,26 @@ class FileStorage():
 
     def new(self, obj):
         """ Adds a key to __objects """
-        key = __class__.__name__ + "." + BaseModel.id
+        key = ""
+        try:
+            key += obj.__class__.__name__ + "." + obj.id
+        except AttributeError:
+            key += obj["__class__"] + "." + obj["id"]
         FileStorage.__objects[key] = obj
 
     def save(self):
         """ Serializes __objects to a json file specified in __file_path """
+        obj_copy = FileStorage.__objects
+        new_dict = {}
+        for key in obj_copy.keys():
+            new_dict[key] = obj_copy[key].to_dict()
         with open(FileStorage.__file_path, mode='w', encoding='utf-8') as f:
-            f.write(json.dumps(FileStorage.__objects))
+            f.write(json.dumps(new_dict))
 
     def reload(self):
         """ Deserializes instances from a json file if path exists """
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, encoding='utf-8') as f:
-                data = f.read()
-            FileStorage.__objects = json.loads(data)
+                data = json.loads(f.read())
+            for value in data.values():
+                self.new(value)
