@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Module for class FileStorage """
 
+from models.base_model import BaseModel
 import json
 import os
 
@@ -27,10 +28,7 @@ class FileStorage():
     def new(self, obj):
         """ Adds a key to __objects """
         key = ""
-        try:
-            key += obj.__class__.__name__ + "." + obj.id
-        except AttributeError:
-            key += obj["__class__"] + "." + obj["id"]
+        key += obj.__class__.__name__ + "." + obj.id
         FileStorage.__objects[key] = obj
 
     def save(self):
@@ -38,10 +36,7 @@ class FileStorage():
         obj_copy = FileStorage.__objects
         new_dict = {}
         for key in obj_copy.keys():
-            if type(obj_copy[key]) is not dict:
-                new_dict[key] = obj_copy[key].to_dict()
-            else:
-                new_dict[key] = obj_copy[key]
+            new_dict[key] = obj_copy[key].to_dict()
         with open(FileStorage.__file_path, mode='w', encoding='utf-8') as f:
             f.write(json.dumps(new_dict))
 
@@ -51,4 +46,4 @@ class FileStorage():
             with open(FileStorage.__file_path, encoding='utf-8') as f:
                 data = json.loads(f.read())
             for value in data.values():
-                self.new(value)
+                BaseModel(**value)
