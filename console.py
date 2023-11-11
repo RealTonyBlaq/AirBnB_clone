@@ -8,10 +8,6 @@ from models.engine.file_storage import FileStorage
 from shlex import split
 
 
-#def parse(arg):
-
-
-
 class HBNBCommand(cmd.Cmd):
     """class definition"""
 
@@ -87,7 +83,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif "{}.{}".format(args[0], args[1]) not in obj_dict:
             print("** no instance found **")
-        else:  
+        else:
             del obj_dict["{}.{}".format(args[0], args[1])]
             storage.save()
 
@@ -103,9 +99,9 @@ class HBNBCommand(cmd.Cmd):
             obj_list = []
             for obj in storage.all().values():
                 if len(args) > 0 and args[0] == obj.__class__.__name__:
-                    obj_list.append(str(obj)) #obj.__str__())
+                    obj_list.append(str(obj))  # obj.__str__())
                 elif len(args) == 0:
-                    obj_list.append(str(obj)) #obj.__str__())
+                    obj_list.append(str(obj))  # obj.__str__())
             print(obj_list)
 
     def do_update(self, arg):
@@ -136,7 +132,6 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** value missing **")
                 return False
-
         if len(args) == 4:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             if args[2] in obj.__class__.__dict__.keys():
@@ -144,7 +139,6 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[args[2]] = val_type(args[3])
             else:
                 obj.__dict__[args[2]] = args[3]
-        
         elif type(eval(args[2])) == dict:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             for ki, va in eval(args[2]).items():
