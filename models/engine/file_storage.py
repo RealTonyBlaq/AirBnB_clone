@@ -15,7 +15,7 @@ class FileStorage():
     Private Class Attributes:
     -------------------------
     file_path (str): path to the JSON file
-    objects (dict): empty but wii stores all objects
+    objects (dict): empty but will stores all objects
     by <class name>.id
     """
     __file_path = "file.json"
