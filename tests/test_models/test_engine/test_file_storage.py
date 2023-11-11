@@ -40,3 +40,15 @@ class TestFileStorage(unittest.TestCase):
         fs = FileStorage()
         fs.save()
         self.assertTrue(os.path.exists("file.json"))
+
+    def test_reload(self):
+        """ Tests if reload() recreates instances """
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        fs = FileStorage()
+        a_dict = fs.all().copy()
+        fs.save()
+        fs.reload()
+        new_dict = fs.all().copy()
+        self.assertEqual(type(new_dict), dict)
+        self.assertCountEqual(a_dict, new_dict)
