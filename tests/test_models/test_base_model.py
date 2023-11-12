@@ -105,3 +105,7 @@ class TestBaseModel(unittest.TestCase):
         """ Checks type of the return value of to_dict() """
         bm = BaseModel()
         self.assertIsInstance(bm.to_dict(), dict)
+
+
+if __name__ == "__main__":
+    unittest.main()
