@@ -2,6 +2,7 @@
 """a script for the entry point to the command interpreter"""
 
 import cmd
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
@@ -27,6 +28,27 @@ class HBNBCommand(cmd.Cmd):
         "Amenity",
         "Review"
     }
+
+    def default(self, arg):
+        """The default cmd behaviour for invalid  inputs"""
+        args_dict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
+        }
+        exact = re.search(r"\.", arg)
+        if exact is not None:
+            args = [arg[:exact.span()[0]], arg[exact.span()[1]:]]
+            exact = re.search(r"\((.*?)\)", args[1])
+            if exact is not None:
+                command = [args[1][:exact.span()[0]], exact.group()[1:-1]]
+                if command[0] in args_dict.keys():
+                    call = "{} {}".format(args[0], command[1])
+                    return args_dict[command[0]](call)
+        print("*** Unknown syntax: {}".format(arg))
+        return False
 
     def do_quit(self, line):
         """Quit command to exit the program
