@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Script that defines the class Amenity"""
+
 from models.base_model import BaseModel
 
 
