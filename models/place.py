@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Script that define the class place"""
+
 from models.base_model import BaseModel
 
 
