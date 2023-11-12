@@ -37,12 +37,12 @@ class TestBaseModel_instance_creation(unittest.TestCase):
     def test_args(self):
         """ Tests when only *args is passed """
         bm = BaseModel("name")
-        self.assertNotIn("name", bm.__dict__)
+        self.assertNotIn("name", bm.__dict__.values())
 
     def test_None(self):
         """ Tests when None is passed """
         bm = BaseModel(None)
-        self.assertIn(bm, FileStorage.all(bm).values())
+        self.assertNotIn(None, bm.__dict__.values())
 
     def test_kwargs_(self):
         """
@@ -54,6 +54,23 @@ class TestBaseModel_instance_creation(unittest.TestCase):
         date = str(datetime.datetime.now())
         a_dict = {'id': "12345", 'created_at': date, 'updated_at': date}
         self.assertEqual("12345", BaseModel(**a_dict).id)
+
+    def test_kwargs_None(self):
+        """
+        Tests a dict as **kwargs with:
+        id = None
+        created_at = None
+        updated_at = None
+        """
+        a_dict = {'id': None, 'created_at': None, 'updated_at': None}
+        with self.assertRaises(TypeError):
+            BaseModel(**a_dict)
+
+    def test_kwargs_dict(self):
+        """ Tests BaseModel with kwargs as a list """
+        my_list = ["age", "number", "time"]
+        with self.assertRaises(TypeError):
+            BaseModel(**my_list)
 
     def test_args_dict(self):
         """ Tests when a list is passed as *args """
