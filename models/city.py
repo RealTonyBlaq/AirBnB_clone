@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Script of a class City"""
+
 from models.base_model import BaseModel
 
 
