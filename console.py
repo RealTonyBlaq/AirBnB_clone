@@ -50,6 +50,17 @@ class HBNBCommand(cmd.Cmd):
         print("*** Unknown syntax: {}".format(arg))
         return False
 
+    def do_count(self, arg):
+        """Retrieve the number of instances of a given class.
+        Usage: count <class> or <class>.count()
+        """
+        args = split(arg)
+        count = 0
+        for obj in storage.all().values():
+            if args[0] == obj.__class__.__name__:
+                count += 1
+        print(count)
+
     def do_quit(self, line):
         """Quit command to exit the program
         """
