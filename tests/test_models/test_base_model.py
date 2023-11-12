@@ -34,6 +34,12 @@ class TestBaseModel_instance_creation(unittest.TestCase):
         bm = BaseModel()
         self.assertIn(bm, FileStorage.all(bm).values())
 
+    def test_attr_created_exists(self):
+        """ Checks if a created attribute exists """
+        bm = BaseModel()
+        bm.time = "2:30pm"
+        self.assertEqual("2:30pm", bm.time)
+
     def test_args(self):
         """ Tests when only *args is passed """
         bm = BaseModel("name")
@@ -66,20 +72,20 @@ class TestBaseModel_instance_creation(unittest.TestCase):
         with self.assertRaises(TypeError):
             BaseModel(**a_dict)
 
-    def test_kwargs_dict(self):
+    def test_kwargs_list(self):
         """ Tests BaseModel with kwargs as a list """
         my_list = ["age", "number", "time"]
         with self.assertRaises(TypeError):
             BaseModel(**my_list)
 
-    def test_args_dict(self):
+    def test_args_list(self):
         """ Tests when a list is passed as *args """
         my_list = ["age", "name"]
         bm = BaseModel(*my_list)
-        self.assertNotIn("age", bm.__dict__)
-        self.assertNotIn("name", bm.__dict__)
+        self.assertNotIn("age", bm.__dict__.values())
+        self.assertNotIn("name", bm.__dict__.values())
 
-    def test_args_attr(self):
+    def test_args_and_kwargs(self):
         """ Tests when *args exists and **kwargs exists too """
         bm = BaseModel()
         bm.first_name = "Ifeanyi"
@@ -95,10 +101,13 @@ class TestBaseModel_instance_creation(unittest.TestCase):
         """
         a_dict = {}
         bm = BaseModel(**a_dict)
-        self.assertIsInstance(bm.id, str)
+        self.assertIn(bm.id, bm.__dict__.values())
 
     def test_kwargs_not_empty(self):
-        """ Tests the **kwargs when it is not empty """
+        """
+        Tests BaseModel when **kwargs is the dict rep of another
+        BaseModel class
+        """
         bm = BaseModel()
         bm.name = "Ifeanyi"
         bm.age = 15
@@ -125,6 +134,16 @@ class TestBaseModel_instance_creation(unittest.TestCase):
         """ Confirms if updated_at is an instance of datetime """
         bm = BaseModel()
         self.assertIsInstance(bm.updated_at, datetime.datetime)
+
+    def test_created_at_type(self):
+        """ Confirms if created_at is a type() of datetime """
+        bm = BaseModel()
+        self.assertEqual(type(bm.created_at), datetime.datetime)
+
+    def test_updated_at_type(self):
+        """ Confirms if updated_at is a type() of datetime """
+        bm = BaseModel()
+        self.assertEqual(type(bm.updated_at), datetime.datetime)
 
     def test_updated_at_is_not_created_at(self):
         """ Checks if attributes updated_at and created_at are not equal """
