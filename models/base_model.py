@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ Module for class BaseModel """
 
-import datetime
+from datetime import datetime
 import uuid
-import models
+from models import storage
 
 
 class BaseModel:
@@ -28,15 +28,15 @@ class BaseModel:
         """
         args = None
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key == "updated_at" or key == "created_at":
-                        value = datetime.datetime.fromisoformat(value)
+                        value = datetime.fromisoformat(value)
                     setattr(self, key, value)
-        models.storage.new(self)
+        storage.new(self)
 
     def __str__(self):
         """ Returns a string representation of BaseModel """
@@ -48,8 +48,8 @@ class BaseModel:
         Updates the public instance attr @updated_at with the
         current datetime
         """
-        self.updated_at = datetime.datetime.now()
-        models.storage.save()
+        self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
