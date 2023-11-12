@@ -28,12 +28,6 @@ class HBNBCommand(cmd.Cmd):
         "Review"
     }
 
-    def emptyline(self):
-        """Nothing should be done when empty line
-        is passed.
-        """
-        pass
-
     def do_quit(self, line):
         """Quit command to exit the program
         """
