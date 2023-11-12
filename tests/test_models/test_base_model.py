@@ -5,10 +5,34 @@ import datetime
 from models.base_model import BaseModel
 import unittest
 import uuid
+from models.engine.file_storage import FileStorage
 
 
-class TestBaseModel(unittest.TestCase):
-    """ Testing the BaseModel class """
+class TestBaseModel_instance_creation(unittest.TestCase):
+    """ Testing the BaseModel instance creation """
+
+    def test_type(self):
+        """ Tests instance type """
+        bm = BaseModel()
+        self.assertEqual(BaseModel, type(bm))
+
+    def test_two_instances(self):
+        """ Tests two instances' ids, verifying inequality """
+        bm1 = BaseModel()
+        bm2 = BaseModel()
+        self.assertNotEqual(bm1.id, bm2.id)
+
+    def test_instance_attr_exists(self):
+        """ Verifies existence of all attributes """
+        bm = BaseModel()
+        self.assertIn(bm.id, bm.__dict__.values())
+        self.assertIn(bm.created_at, bm.__dict__.values())
+        self.assertIn(bm.updated_at, bm.__dict__.values())
+
+    def test_instance_storage(self):
+        """ Tests that instance was stored """
+        bm = BaseModel()
+        self.assertIn(bm, FileStorage.all(bm).values())
 
     def test_args(self):
         """ Tests when only *args is passed """
@@ -68,17 +92,28 @@ class TestBaseModel(unittest.TestCase):
         bm = BaseModel()
         self.assertIsInstance(bm.updated_at, datetime.datetime)
 
+    def test_updated_at_is_not_created_at(self):
+        """ Checks if attributes updated_at and created_at are not equal """
+        bm = BaseModel()
+        self.assertNotEqual(bm.created_at, bm.updated_at)
+
+
+class TestBaseModel_Save(unittest.TestCase):
+    """ Testing the public method save() of BaseModel """
+
+    def test_save(self):
+        """ Checks if updated_at updates at save() call """
+        bm = BaseModel()
+        before_save = bm.updated_at
+        bm.save()
+        self.assertNotEqual(before_save, bm.updated_at)
+
     def test_updated_at_save(self):
         """ Tests if updated_at updates when save() is called """
         bm = BaseModel()
         before_save = bm.updated_at
         bm.save()
         self.assertGreater(bm.updated_at, before_save)
-
-    def test_updated_at_is_not_created_at(self):
-        """ Checks if attributes updated_at and created_at are not equal """
-        bm = BaseModel()
-        self.assertNotEqual(bm.created_at, bm.updated_at)
 
     def test_updated_at_ne_created_at(self):
         """
@@ -89,18 +124,18 @@ class TestBaseModel(unittest.TestCase):
         bm.save()
         self.assertNotEqual(bm.created_at, bm.updated_at)
 
+
+class TestBaseModel_string_representation(unittest.TestCase):
+    """ Tests the __str__() method of BaseModel """
+
     def test_str_type(self):
         """ Tests the string representation of BaseModel """
         bm = BaseModel()
         self.assertEqual(type(bm.__str__()), str)
 
-    def test_save(self):
-        """ Checks if updated_at updates at save() call """
-        bm = BaseModel()
-        before_save = bm.updated_at
-        bm.save()
-        self.assertNotEqual(before_save, bm.updated_at)
 
+class TestBaseModel_to_dict(unittest.TestCase):
+    """ Tests the to_dict() method of BaseModel """
     def test_to_dict_type(self):
         """ Checks type of the return value of to_dict() """
         bm = BaseModel()
