@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 """ Unittest for BaseModel in base_model.py """
 
-import datetime
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+import datetime
+import json
+import os
 import unittest
 import uuid
-from models.engine.file_storage import FileStorage
 
 
 class TestBaseModel_instance_creation(unittest.TestCase):
@@ -177,6 +179,46 @@ class TestBaseModel_Save(unittest.TestCase):
         bm.save()
         self.assertNotEqual(bm.created_at, bm.updated_at)
 
+    def test_save_before_call(self):
+        """ Tests if the file was created with instantiation """
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        bm = BaseModel()
+        self.assertFalse(os.path.exists("file.json"))
+
+    def test_save_file(self):
+        """ checks if the file is created at save() call """
+        bm = BaseModel()
+        bm.save()
+        self.assertTrue(os.path.exists("file.json"))
+
+    def test_save_with_arg(self):
+        """ Tests save with a positional argument """
+        bm = BaseModel()
+        with self.assertRaises(TypeError):
+            bm.save(["list", "test", 20])
+
+    def test_save_with_another_instance(self):
+        """ Tests save() with another instance """
+        bm = BaseModel()
+        with self.assertRaises(TypeError):
+            BaseModel().save(bm)
+
+    def test_save_file_content_type(self):
+        """ Tests if file contents is a dict after deserialization """
+        BaseModel().save()
+        with open("file.json", encoding='utf-8') as file:
+            data = json.loads(file.read())
+        self.assertEqual(type(data), dict)
+
+    def test_save_updates_file(self):
+        """ Tests if a string exists in the file """
+        bm = BaseModel()
+        bm.save()
+        bmid = "{}.{}".format(bm.__class__.__name__, bm.id)
+        with open("file.json", "r") as f:
+            self.assertIn(bmid, f.read())
+
 
 class TestBaseModel_string_representation(unittest.TestCase):
     """ Tests the __str__() method of BaseModel """
@@ -186,13 +228,53 @@ class TestBaseModel_string_representation(unittest.TestCase):
         bm = BaseModel()
         self.assertEqual(type(bm.__str__()), str)
 
+    def test_str_result(self):
+        """ Tests the __str__() result """
+        bm = BaseModel()
+        self.assertEqual(bm.__str__(), "[{}] ({}) {}"
+                         .format(bm.__class__.__name__, bm.id, bm.__dict__))
+
 
 class TestBaseModel_to_dict(unittest.TestCase):
     """ Tests the to_dict() method of BaseModel """
+
     def test_to_dict_type(self):
         """ Checks type of the return value of to_dict() """
         bm = BaseModel()
         self.assertIsInstance(bm.to_dict(), dict)
+
+    def test_to_dict_return_values(self):
+        """ Checks if attrs created are returned by to_dict() """
+        bm = BaseModel()
+        self.assertIn("id", bm.to_dict().keys())
+        self.assertIn("created_at", bm.to_dict().keys())
+        self.assertIn("__class__", bm.to_dict().keys())
+        self.assertIn("updated_at", bm.to_dict().keys())
+
+    def test_to_dict_return_value(self):
+        """ Checks if new attrs created are returned by to_dict() """
+        bm = BaseModel()
+        bm.test = "Passed"
+        self.assertIn("test", bm.to_dict().keys())
+
+    def test_to_dict_arg(self):
+        """ Tests to_dict() with an argument """
+        a_dict = {"id": "12345", "name": "Ifeanyi"}
+        with self.assertRaises(TypeError):
+            BaseModel().to_dict(a_dict)
+
+    def test_to_dict_attr_types(self):
+        """ Tests the attribute types """
+        bm_dict = BaseModel().to_dict()
+        self.assertEqual(type(bm_dict["id"]), str)
+        self.assertEqual(type(bm_dict["__class__"]), str)
+        self.assertEqual(type(bm_dict["created_at"]), str)
+        self.assertEqual(type(bm_dict["updated_at"]), str)
+
+    def test_to_dict_and_dict(self):
+        """ Confirms that self.__dict__ and to_dict() are not equal """
+        bm = BaseModel()
+        self.assertNotEqual(bm.to_dict(), bm.__dict__)
 
 
 if __name__ == "__main__":
