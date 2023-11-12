@@ -52,3 +52,7 @@ class TestFileStorage(unittest.TestCase):
         new_dict = fs.all().copy()
         self.assertEqual(type(new_dict), dict)
         self.assertCountEqual(a_dict, new_dict)
+
+
+if __name__ == "__main__":
+    unittest.main()
