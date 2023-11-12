@@ -160,7 +160,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return False
         if "{}.{}".format(args[0], args[1]) not in obj_dict.keys():
-            print(" no instance found **")
+            print("** no instance found **")
             return False
         if len(args) == 2:
             print("** attribute name missing **")
@@ -178,11 +178,12 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[args[2]] = val_type(args[3])
             else:
                 obj.__dict__[args[2]] = args[3]
+            storage.save()
         elif type(eval(args[2])) == dict:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             for ki, va in eval(args[2]).items():
                 if (ki in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[ki]) in {str, int, float}):
+                        type(obj.__class__.__dict__[ki]), {str, int, float}):
                     val_type = type(obj.__class__.__dict__[ki])
                     obj.__dict__[ki] = val_type(va)
                 else:
