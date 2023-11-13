@@ -8,6 +8,26 @@ import os
 import unittest
 
 
+class TestFileStorage_attrs(unittest.TestCase):
+    """ Testing the private class attributes """
+
+    def test_objects(self):
+        """ Tests __objects of FileStorage """
+        fs = FileStorage()
+        obj = getattr(fs, '_FileStorage__objects')
+        self.assertEqual(type(obj), dict)
+        self.assertNotEqual(obj, None)
+
+    def test_file_path(self):
+        """ Tests __file_path of FileStorage """
+        fs = FileStorage()
+        file = getattr(fs, '_FileStorage__file_path')
+        self.assertNotEqual(file, None)
+        self.assertEqual(type(file), str)
+        fs.save()
+        self.assertTrue(os.path.exists(file))
+
+
 class TestFileStorage_all(unittest.TestCase):
     """ Testing FileStorage.all() """
 
