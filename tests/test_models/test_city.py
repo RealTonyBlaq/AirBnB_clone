@@ -2,10 +2,11 @@
 """to test the city module"""
 import unittest
 from models.city import City
+from models.base_model import BaseModel
 import datetime
 
 
-class TestState(unittest.TestCase):
+class TestCity(unittest.TestCase):
     def setUp(self):
         """set up a city instance for testing"""
         self.city = City()
