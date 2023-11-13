@@ -209,6 +209,19 @@ class TestFileStorage_reload(unittest.TestCase):
         fs.reload()
         self.assertFalse("__class__" in fs.all().values())
 
+    def test_reload_instances(self):
+        """ Tests for instance reload """
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        fs = FileStorage()
+        bm = BaseModel()
+        fs.new(bm)
+        fs.save()
+        del bm
+        del fs
+        ff = FileStorage()
+        ff.reload()
+        self.assertNotEqual(ff.all(), {})
 
 if __name__ == "__main__":
     unittest.main()
