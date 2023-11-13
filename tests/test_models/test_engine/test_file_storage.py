@@ -6,6 +6,7 @@ from models.base_model import BaseModel
 import json
 import os
 import unittest
+import models
 
 
 class TestFileStorage_attrs(unittest.TestCase):
@@ -213,15 +214,13 @@ class TestFileStorage_reload(unittest.TestCase):
         """ Tests for instance reload """
         if os.path.exists("file.json"):
             os.remove("file.json")
-        fs = FileStorage()
         bm = BaseModel()
-        fs.new(bm)
-        fs.save()
-        del bm
-        del fs
-        ff = FileStorage()
-        ff.reload()
-        self.assertNotEqual(ff.all(), {})
+        FileStorage._FileStorage__objects = {}
+        models.storage.new(bm)
+        models.storage.save()
+        models.storage.reload()
+        obj = FileStorage._FileStorage__objects
+        self.assertIn("BaseModel." + bm.id, obj)
 
 if __name__ == "__main__":
     unittest.main()
