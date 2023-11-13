@@ -153,6 +153,7 @@ class HBNBCommand(cmd.Cmd):
 
         if len(args) == 0:
             print("** class name missing **")
+            return False
         if args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return False
