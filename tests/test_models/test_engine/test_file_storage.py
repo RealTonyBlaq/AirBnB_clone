@@ -198,6 +198,17 @@ class TestFileStorage_reload(unittest.TestCase):
         self.assertEqual(type(new_dict), dict)
         self.assertCountEqual(a_dict, new_dict)
 
+    def test_reload_override(self):
+        """ Tests for method override """
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        fs = FileStorage()
+        bm = BaseModel()
+        fs.new(bm)
+        fs.save()
+        fs.reload()
+        self.assertFalse("__class__" in fs.all().values())
+
 
 if __name__ == "__main__":
     unittest.main()
