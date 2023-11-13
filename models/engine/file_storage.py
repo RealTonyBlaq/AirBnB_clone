@@ -52,4 +52,6 @@ class FileStorage():
             with open(FileStorage.__file_path, encoding='utf-8') as f:
                 data = json.loads(f.read())
             for value in data.values():
-                BaseModel(**value)
+                name = value["__class__"]
+                del value["__class__"]
+                self.new(eval(name)(**value))
