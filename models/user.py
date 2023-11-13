@@ -22,10 +22,10 @@ class User(BaseModel):
         self.last_name = " "
     """
 
-    email = " "
-    password = " "
-    first_name = " "
-    last_name = " "
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""
 
     """def to_dict(self):
         '''Return dictionary representation of user'''
