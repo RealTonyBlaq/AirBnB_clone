@@ -172,15 +172,15 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** value missing **")
                 return False
-        elif len(args) == 4:
+        if len(args) == 4:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             if args[2] in obj.__class__.__dict__.keys():
                 val_type = type(obj.__class__.__dict__[args[2]])
                 obj.__dict__[args[2]] = val_type(args[3])
             else:
                 obj.__dict__[args[2]] = args[3]
-        storage.save()
-        """elif type(eval(args[2])) == dict:
+            # storage.save()
+        elif type(eval(args[2])) == dict:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             for ki, va in eval(args[2]).items():
                 if (ki in obj.__class__.__dict__.keys() and
@@ -189,7 +189,7 @@ class HBNBCommand(cmd.Cmd):
                     obj.__dict__[ki] = val_type(va)
                 else:
                     obj.__dict__[ki] = va
-        storage.save()"""
+        storage.save()
 
 
 if __name__ == "__main__":
