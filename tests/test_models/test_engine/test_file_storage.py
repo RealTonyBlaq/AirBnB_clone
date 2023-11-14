@@ -6,6 +6,27 @@ from models.base_model import BaseModel
 import json
 import os
 import unittest
+import models
+
+
+class TestFileStorage_attrs(unittest.TestCase):
+    """ Testing the private class attributes """
+
+    def test_objects(self):
+        """ Tests __objects of FileStorage """
+        fs = FileStorage()
+        obj = getattr(fs, '_FileStorage__objects')
+        self.assertEqual(type(obj), dict)
+        self.assertNotEqual(obj, None)
+
+    def test_file_path(self):
+        """ Tests __file_path of FileStorage """
+        fs = FileStorage()
+        file = getattr(fs, '_FileStorage__file_path')
+        self.assertNotEqual(file, None)
+        self.assertEqual(type(file), str)
+        fs.save()
+        self.assertTrue(os.path.exists(file))
 
 
 class TestFileStorage_all(unittest.TestCase):
@@ -178,6 +199,28 @@ class TestFileStorage_reload(unittest.TestCase):
         self.assertEqual(type(new_dict), dict)
         self.assertCountEqual(a_dict, new_dict)
 
+    def test_reload_override(self):
+        """ Tests for method override """
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        fs = FileStorage()
+        bm = BaseModel()
+        fs.new(bm)
+        fs.save()
+        fs.reload()
+        self.assertFalse("__class__" in fs.all().values())
+
+    def test_reload_instances(self):
+        """ Tests for instance reload """
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        bm = BaseModel()
+        FileStorage._FileStorage__objects = {}
+        models.storage.new(bm)
+        models.storage.save()
+        models.storage.reload()
+        obj = FileStorage._FileStorage__objects
+        self.assertIn("BaseModel." + bm.id, obj)
 
 if __name__ == "__main__":
     unittest.main()
