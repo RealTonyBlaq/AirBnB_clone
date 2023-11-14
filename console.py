@@ -179,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[args[2]] = val_type(args[3])
             else:
                 obj.__dict__[args[2]] = args[3]
-            # storage.save()
+            storage.save()
         elif type(eval(args[2])) == dict:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             for ki, va in eval(args[2]).items():
