@@ -1,15 +1,16 @@
-#AirBnB_clone
+# AirBnB_clone
 
 ## A Command Interpreter (The console)
 
-### HOW TO START THE APPLICATION?
+***HOW TO START THE APPLICATION?***
+
 Run `./console.py` on your shell prompt - To start the application
 
 NOTE: - A prompt will be given by the console where you type in the various commands.
 
 e.g `(HNBN) <command> <argument(s)>`
 
-## HOW TO USE IT?
+***HOW TO USE IT?***
 
 ### Interactive Mode
 
