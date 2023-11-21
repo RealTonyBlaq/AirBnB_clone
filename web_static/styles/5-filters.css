@@ -1,9 +1,17 @@
-section.filters div {
+section.filters div.locations {
     height: 100%;
-    width: 25%;
+    width: 45%;
     border-right: solid 1px #DDDDDD;
+    margin-left: 30px;
     text-align: left;
-    te
+    font-weight: 600;
+}
+
+section.filters div.amenities {
+    height: 100%;
+    width: 80%;
+    text-align: left;
+    margin-left: 30px;
     font-weight: 600;
 }
 
