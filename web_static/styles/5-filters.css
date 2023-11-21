@@ -1,0 +1,13 @@
+section.filters div {
+    height: 100%;
+    width: 25%;
+    border-right: solid 1px #DDDDDD;
+    text-align: left;
+    te
+    font-weight: 600;
+}
+
+section.filters div h4 {
+    font-weight: 400;
+    font-size: 14px;
+}
