@@ -1,21 +1,30 @@
-section.filters div.locations {
+.locations {
     height: 100%;
     width: 45%;
     border-right: solid 1px #DDDDDD;
     margin-left: 30px;
     text-align: left;
-    font-weight: 600;
+    float: left;
 }
 
-section.filters div.amenities {
+.amenities {
     height: 100%;
     width: 80%;
     text-align: left;
     margin-left: 30px;
-    font-weight: 600;
+    float: left;
 }
 
-section.filters div h4 {
+h3 {
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
     font-weight: 400;
     font-size: 14px;
 }
